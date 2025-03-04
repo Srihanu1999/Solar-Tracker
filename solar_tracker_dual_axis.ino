@@ -1,4 +1,11 @@
-#include <Servo.h>
+
+  #include <Servo.h>
+#include <LiquidCrystal.h>
+
+// Define the pins for the LCD
+const int RS = 2, E = 3, D4 = 4, D5 = 8, D6 = 12, D7 = 13;
+LiquidCrystal lcd(RS, E, D4, D5, D6, D7);
+
 
 // horizontal servo
 Servo horizontal;
@@ -38,9 +45,21 @@ void loop() {
   int tr = analogRead(ldrTR); // top right
   int tl = analogRead(ldrTL); // top left
   int br = analogRead(ldrBR); // bottom right
-  int bl = analogRead(ldrBL); // bottom left
+  int bl = analogRead(ldrBL); 
+  lcd.clear();
+  // Print the LDR value to the LCD
 
-  int dtime = 50; // change for debugging only
+  lcd.setCursor(0, 0);
+  lcd.print(tr);
+  lcd.setCursor(4, 0);
+  lcd.print(tl);
+  lcd.setCursor(8,0);
+  lcd.print(br);
+  lcd.setCursor(12,0);
+  lcd.print(bl);
+  delay(100);// bottom left
+
+  int dtime = 40; // change for debugging only
   int tol = 50;
 
   int avt = (tl + tr) / 2; // average value top
@@ -58,35 +77,39 @@ void loop() {
       if (servo_vertical > servo_vertical_limit_high) {
         servo_vertical = servo_vertical_limit_high;
       }
+      delay(10);
     }
     else if (avt < avd) {
       servo_vertical = --servo_vertical;
       if (servo_vertical < servo_vertical_limit_low) {
         servo_vertical = servo_vertical_limit_low;
       }
+      delay(10);
     }
     vertical.write(servo_vertical);
   }
 
   // check if the difference is in the tolerance else change horizontal angle
-  if (-1 * tol > dhoriz || dhoriz > tol) {
+  //if (-1 * tol > dhoriz || dhoriz > tol) 
     if (avl > avr) {
       servo_horizontal = ++servo_horizontal;
       if (servo_horizontal < servo_horizontal_limit_low) {
         servo_horizontal = servo_horizontal_limit_low;
       }
+      delay(10);
     }
     else if (avl < avr) {
       servo_horizontal = --servo_horizontal;
       if (servo_horizontal > servo_horizontal_limit_high) {
         servo_horizontal = servo_horizontal_limit_high;
       }
+      delay(10);
     }
     else if (avl == avr) {
       // nothing
     }
     horizontal.write(servo_horizontal);
-  }
+  
   
   delay(dtime);
   
