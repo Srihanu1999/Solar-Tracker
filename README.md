@@ -1,1 +1,2 @@
 # Solar-Tracker
+This project uses Arduino to control two servo motors that adjust a solar panel’s position for maximum sunlight exposure. Four LDRs (Light Dependent Resistors) detect light intensity at different points, and the Arduino calculates the difference to move the panel accordingly. The Servo library is used to control motor movements within set angle limits. The system ensures real-time tracking and improves solar energy efficiency. 
